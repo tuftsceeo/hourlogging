@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --ceeo-navy: #004591;
     --ceeo-blue: #3E8EDE;
@@ -17,7 +16,6 @@
     --ceeo-yellow: #F1C400;
     --ceeo-navy-dark: #003070;
     --ceeo-blue-light: #e8f2fc;
-    --ceeo-yellow-light: #fdf8e1;
     --text-primary: #1a1a2e;
     --text-secondary: #5a6478;
     --text-muted: #9aa0ad;
@@ -32,305 +30,76 @@
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
   }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg-page);
-    color: var(--text-primary);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  /* ── HEADER ── */
-  .site-header {
-    background: var(--ceeo-navy);
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    height: 58px;
-    gap: 16px;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 15px; line-height: 1.5; }
+  .site-header { background: var(--ceeo-navy); padding: 0 24px; display: flex; align-items: center; height: 58px; gap: 16px; }
   .site-header .logo-wrap { display: flex; flex-direction: column; gap: 1px; }
   .site-header .logo-main { color: #fff; font-size: 16px; font-weight: 600; letter-spacing: 0.2px; }
   .site-header .logo-sub { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 0.3px; }
   .site-header .header-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
   .site-header .user-name { color: rgba(255,255,255,0.8); font-size: 13px; }
-  .site-header .sign-out-btn {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.85);
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.15s;
-  }
+  .site-header .sign-out-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.85); font-size: 12px; padding: 5px 12px; border-radius: var(--radius-sm); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
   .site-header .sign-out-btn:hover { background: rgba(255,255,255,0.2); }
-
-  /* ── LAYOUT ── */
   .page-wrap { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
-
-  .week-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
+  .week-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .week-bar .week-label { font-size: 13px; color: var(--text-secondary); }
   .week-bar .week-label strong { color: var(--text-primary); font-weight: 600; }
-  .saved-pill {
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    background: #e6f4ea;
-    color: #2d7a3a;
-    padding: 3px 10px;
-    border-radius: 20px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+  .saved-pill { font-size: 11px; font-family: 'DM Mono', monospace; background: #e6f4ea; color: #2d7a3a; padding: 3px 10px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; }
   .saved-pill.show { opacity: 1; }
-
-  /* ── CARDS ── */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    margin-bottom: 16px;
-  }
-  .card-header {
-    background: var(--ceeo-blue);
-    color: #fff;
-    padding: 11px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-  }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 16px; }
+  .card-header { background: var(--ceeo-blue); color: #fff; padding: 11px 18px; font-size: 13px; font-weight: 600; letter-spacing: 0.2px; }
   .card-body { padding: 18px; }
-
-  /* ── EMPLOYEE INFO ── */
   .info-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .info-field label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; font-weight: 500; }
   .info-field .val { font-size: 14px; color: var(--text-primary); font-weight: 500; }
-
-  /* ── PROJECT BLOCK ── */
-  .project-block {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .project-block-header {
-    background: var(--ceeo-yellow);
-    padding: 8px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .project-block { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 12px; }
+  .project-block-header { background: var(--ceeo-yellow); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; }
   .project-block-header .proj-label { font-size: 12px; font-weight: 600; color: var(--ceeo-navy); text-transform: uppercase; letter-spacing: 0.4px; }
   .project-block-header .proj-name { font-size: 13px; color: var(--ceeo-navy-dark); font-weight: 500; }
   .project-block-body { padding: 14px 16px; }
-
-  /* ── DAY GRID ── */
   .day-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
   .day-col { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-  .day-col label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-  }
+  .day-col label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
   .day-col label.today-lbl { color: var(--ceeo-orange); }
-  .day-col input[type="number"] {
-    width: 100%;
-    padding: 7px 4px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    background: var(--bg-input);
-    color: var(--text-primary);
-    -moz-appearance: textfield;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .day-col input[type="number"]::-webkit-inner-spin-button,
-  .day-col input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .day-col input[type="number"]:focus {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(62,142,222,0.12);
-  }
+  .day-col input[type="number"] { width: 100%; padding: 7px 4px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Mono', monospace; text-align: center; background: var(--bg-input); color: var(--text-primary); -moz-appearance: textfield; transition: border-color 0.15s, box-shadow 0.15s; }
+  .day-col input[type="number"]::-webkit-inner-spin-button, .day-col input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .day-col input[type="number"]:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(62,142,222,0.12); }
   .day-col input[type="number"].today-input { border-color: rgba(239,108,0,0.4); }
   .day-col input[type="number"].today-input:focus { border-color: var(--ceeo-orange); box-shadow: 0 0 0 3px rgba(239,108,0,0.12); }
-  .day-col.total-col input {
-    background: #f0f5fb;
-    border-color: #c8d8ec;
-    color: var(--ceeo-navy);
-    font-weight: 600;
-    pointer-events: none;
-  }
-
-  /* ── ADD PROJECT ── */
-  .add-project-btn {
-    width: 100%;
-    padding: 11px;
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-md);
-    background: none;
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
-    margin-top: 4px;
-  }
-  .add-project-btn:hover {
-    border-color: var(--ceeo-blue);
-    color: var(--ceeo-blue);
-    background: var(--ceeo-blue-light);
-  }
-
-  /* ── TOTALS ── */
+  .day-col.total-col input { background: #f0f5fb; border-color: #c8d8ec; color: var(--ceeo-navy); font-weight: 600; pointer-events: none; }
   .totals-list { display: flex; flex-direction: column; gap: 8px; }
-  .totals-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 14px;
-    background: #f7f9fc;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-  }
+  .totals-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: #f7f9fc; border-radius: var(--radius-sm); border: 1px solid var(--border); }
   .totals-row .t-label { font-size: 13px; color: var(--text-secondary); }
   .totals-row .t-value { font-size: 18px; font-weight: 600; color: var(--ceeo-navy); font-family: 'DM Mono', monospace; }
-  .totals-row.grand-row {
-    background: var(--ceeo-navy);
-    border-color: var(--ceeo-navy);
-    margin-top: 4px;
-  }
+  .totals-row.grand-row { background: var(--ceeo-navy); border-color: var(--ceeo-navy); margin-top: 4px; }
   .totals-row.grand-row .t-label { color: rgba(255,255,255,0.75); font-weight: 500; font-size: 14px; }
   .totals-row.grand-row .t-value { color: var(--ceeo-yellow); font-size: 22px; }
-
-  /* ── LOGIN SCREEN ── */
-  #login-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-page);
-    padding: 24px;
-  }
-  .login-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    padding: 36px 40px;
-    width: 100%;
-    max-width: 420px;
-  }
-  .login-card .login-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .login-logo .logo-badge {
-    width: 40px; height: 40px;
-    background: var(--ceeo-navy);
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--ceeo-yellow);
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'DM Mono', monospace;
-  }
+  #login-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-page); padding: 24px; }
+  .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 36px 40px; width: 100%; max-width: 420px; }
+  .login-card .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .login-logo .logo-badge { width: 40px; height: 40px; background: var(--ceeo-navy); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--ceeo-yellow); font-size: 16px; font-weight: 700; font-family: 'DM Mono', monospace; }
   .login-logo .logo-text { display: flex; flex-direction: column; gap: 1px; }
   .login-logo .logo-text .lt-main { font-size: 15px; font-weight: 600; color: var(--text-primary); }
   .login-logo .logo-text .lt-sub { font-size: 11px; color: var(--text-muted); }
   .login-card h1 { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
   .login-card .login-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
   .field-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 6px; }
-  .text-input {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text-primary);
-    background: var(--bg-input);
-    margin-bottom: 14px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
+  .text-input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text-primary); background: var(--bg-input); margin-bottom: 14px; transition: border-color 0.15s, box-shadow 0.15s; }
   .text-input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(62,142,222,0.12); }
-  .submit-btn {
-    width: 100%;
-    padding: 11px;
-    background: var(--ceeo-navy);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    transition: background 0.15s;
-    margin-top: 4px;
-  }
+  .submit-btn { width: 100%; padding: 11px; background: var(--ceeo-navy); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; margin-top: 4px; }
   .submit-btn:hover { background: var(--ceeo-navy-dark); }
   .submit-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
   .login-error { font-size: 13px; color: #c0392b; background: #fdf0ef; border: 1px solid #f5c6c6; border-radius: var(--radius-sm); padding: 9px 12px; margin-top: 12px; display: none; }
   .login-hint { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 16px; }
   .login-hint code { font-family: 'DM Mono', monospace; font-size: 11px; background: #f0f2f5; padding: 2px 5px; border-radius: 3px; }
-
-  /* ── MAGIC LINK SENT ── */
   #magic-sent-screen { display: none; text-align: center; }
   #magic-sent-screen .sent-icon { font-size: 40px; margin-bottom: 16px; }
   #magic-sent-screen h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
   #magic-sent-screen p { font-size: 14px; color: var(--text-secondary); }
-
-  /* ── APP SCREEN ── */
   #app-screen { display: none; }
-
-  /* ── LOADING ── */
-  #loading-screen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    gap: 12px;
-    padding: 40px;
-    color: var(--text-secondary);
-    font-size: 14px;
-  }
-  .spinner {
-    width: 28px; height: 28px;
-    border: 2.5px solid var(--border);
-    border-top-color: var(--ceeo-blue);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
+  #loading-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; gap: 12px; padding: 40px; color: var(--text-secondary); font-size: 14px; }
+  .spinner { width: 28px; height: 28px; border: 2.5px solid var(--border); border-top-color: var(--ceeo-blue); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .error-banner {
-    background: #fdf0ef;
-    border: 1px solid #f5c6c6;
-    border-radius: var(--radius-md);
-    padding: 14px 18px;
-    color: #c0392b;
-    font-size: 13px;
-    margin-bottom: 16px;
-    display: none;
-  }
-
+  .error-banner { background: #fdf0ef; border: 1px solid #f5c6c6; border-radius: var(--radius-md); padding: 14px 18px; color: #c0392b; font-size: 13px; margin-bottom: 16px; display: none; }
   @media (max-width: 600px) {
     .info-row { grid-template-columns: 1fr 1fr; }
     .day-grid { grid-template-columns: repeat(4, 1fr); }
@@ -341,7 +110,6 @@
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
@@ -353,7 +121,6 @@
     </div>
     <h1>Sign in</h1>
     <p class="login-desc">Enter your Tufts email to receive a login link, or use a password if one is set for your account.</p>
-
     <div id="email-step">
       <label class="field-label" for="email-input">Email address</label>
       <input class="text-input" id="email-input" type="email" placeholder="you@tufts.edu" autocomplete="email">
@@ -363,7 +130,6 @@
       <div class="login-error" id="login-error"></div>
       <p class="login-hint">Demo account: <code>test@tuftsceeo.org</code> / <code>password</code></p>
     </div>
-
     <div id="magic-sent-screen">
       <div class="sent-icon">📬</div>
       <h2>Check your email</h2>
@@ -372,7 +138,6 @@
   </div>
 </div>
 
-<!-- APP SCREEN -->
 <div id="app-screen">
   <header class="site-header">
     <div class="logo-wrap">
@@ -384,22 +149,17 @@
       <button class="sign-out-btn" onclick="signOut()">Sign out</button>
     </div>
   </header>
-
   <div class="page-wrap">
     <div id="loading-screen" style="display:flex">
       <div class="spinner"></div>
       <span>Loading your timesheet...</span>
     </div>
-
     <div id="error-banner" class="error-banner"></div>
-
     <div id="timesheet-content" style="display:none">
       <div class="week-bar">
         <span class="week-label">Week of <strong id="week-range-label"></strong></span>
         <span class="saved-pill" id="saved-pill">saved</span>
       </div>
-
-      <!-- Employee Info -->
       <div class="card">
         <div class="card-header">Employee information</div>
         <div class="card-body">
@@ -410,22 +170,14 @@
           </div>
         </div>
       </div>
-
-      <!-- Hours Worked -->
       <div class="card">
         <div class="card-header">Hours worked</div>
-        <div class="card-body" id="projects-body">
-          <!-- injected by JS -->
-        </div>
+        <div class="card-body" id="projects-body"></div>
       </div>
-
-      <!-- Total Hours -->
       <div class="card">
         <div class="card-header">Total hours</div>
         <div class="card-body">
-          <div class="totals-list" id="totals-list">
-            <!-- injected by JS -->
-          </div>
+          <div class="totals-list" id="totals-list"></div>
         </div>
       </div>
     </div>
@@ -433,22 +185,14 @@
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIGURATION — replace with your Apps Script web app URL
-// ─────────────────────────────────────────────
 const SCRIPT_URL = 'https://script.google.com/a/macros/tuftsceeo.org/s/AKfycbw3cJmGzLT65N7IpfMzvxr9YIdygGHpAPzQ9zf-fePQ9B8IgZz36tqVzJ-HtanJmJAdTA/exec';
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
+
 let currentUser = null;
 let timesheetData = null;
 let saveTimer = null;
 
-// ─────────────────────────────────────────────
-// WEEK HELPERS
-// ─────────────────────────────────────────────
 function getSundayOfWeek(d) {
-  const day = new Date(d);
+  var day = new Date(d);
   day.setHours(0,0,0,0);
   day.setDate(day.getDate() - day.getDay());
   return day;
@@ -461,31 +205,45 @@ function getWeekRange() {
   const sat = new Date(sun); sat.setDate(sat.getDate() + 6);
   return { start: sun, end: sat };
 }
-function getTodayDayIndex() {
-  return new Date().getDay(); // 0=Sun
+function getTodayDayIndex() { return new Date().getDay(); }
+
+function callScript(action, params) {
+  return new Promise(function(resolve, reject) {
+    var callbackName = 'cb_' + Math.random().toString(36).slice(2);
+    var script = document.createElement('script');
+    var url = SCRIPT_URL + '?callback=' + callbackName + '&action=' + encodeURIComponent(action) +
+      '&' + Object.entries(params).map(function(kv) {
+        return kv[0] + '=' + encodeURIComponent(typeof kv[1] === 'object' ? JSON.stringify(kv[1]) : kv[1]);
+      }).join('&');
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    script.onerror = function() {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      reject(new Error('Network error'));
+    };
+    script.src = url;
+    document.body.appendChild(script);
+  });
 }
 
-// ─────────────────────────────────────────────
-// AUTH
-// ─────────────────────────────────────────────
 function handleLogin() {
   const email = document.getElementById('email-input').value.trim().toLowerCase();
   const password = document.getElementById('password-input').value;
   const errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
-
   if (!email || !email.includes('@')) {
     errEl.textContent = 'Please enter a valid email address.';
     errEl.style.display = 'block';
     return;
   }
-
   const btn = document.getElementById('login-btn');
   btn.disabled = true;
   btn.textContent = 'Signing in...';
-
   if (password) {
-    // Password login (for demo accounts)
     callScript('login', { email, password })
       .then(res => {
         if (res.success) {
@@ -506,13 +264,11 @@ function handleLogin() {
         btn.textContent = 'Continue';
       });
   } else {
-    // Magic link
     callScript('sendMagicLink', { email })
       .then(res => {
         if (res.success) {
           document.getElementById('email-step').style.display = 'none';
-          const ms = document.getElementById('magic-sent-screen');
-          ms.style.display = 'block';
+          document.getElementById('magic-sent-screen').style.display = 'block';
           document.getElementById('sent-to-email').textContent = email;
         } else {
           errEl.textContent = res.error || 'That email is not registered. Please contact your administrator.';
@@ -546,15 +302,11 @@ function signOut() {
   document.getElementById('magic-sent-screen').style.display = 'none';
 }
 
-// ─────────────────────────────────────────────
-// MAGIC LINK TOKEN HANDLING (on page load)
-// ─────────────────────────────────────────────
 function checkMagicLink() {
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
   const email = params.get('email');
   if (token && email) {
-    // Validate token with backend
     callScript('validateMagicLink', { token, email })
       .then(res => {
         if (res.success) {
@@ -562,9 +314,7 @@ function checkMagicLink() {
           sessionStorage.setItem('ceeo_email', email);
           window.history.replaceState({}, '', window.location.pathname);
           loadApp(email, res.token);
-        } else {
-          showLogin();
-        }
+        } else { showLogin(); }
       })
       .catch(() => showLogin());
     return true;
@@ -572,16 +322,12 @@ function checkMagicLink() {
   return false;
 }
 
-// ─────────────────────────────────────────────
-// LOAD APP
-// ─────────────────────────────────────────────
 function loadApp(email, token) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'block';
   document.getElementById('loading-screen').style.display = 'flex';
   document.getElementById('timesheet-content').style.display = 'none';
   document.getElementById('error-banner').style.display = 'none';
-
   callScript('getTimesheet', { email, token })
     .then(res => {
       document.getElementById('loading-screen').style.display = 'none';
@@ -594,7 +340,7 @@ function loadApp(email, token) {
         showError(res.error || 'Could not load your timesheet. Please try again.');
       }
     })
-    .catch(err => {
+    .catch(() => {
       document.getElementById('loading-screen').style.display = 'none';
       showError('Could not reach the server. Please check your connection and try again.');
     });
@@ -606,24 +352,17 @@ function showError(msg) {
   el.style.display = 'block';
 }
 
-// ─────────────────────────────────────────────
-// RENDER TIMESHEET
-// ─────────────────────────────────────────────
 function renderTimesheet(data) {
   const { start, end } = getWeekRange();
-  document.getElementById('week-range-label').textContent =
-    formatDate(start) + ' – ' + formatDate(end);
-
+  document.getElementById('week-range-label').textContent = formatDate(start) + ' – ' + formatDate(end);
   document.getElementById('header-user-name').textContent = data.name;
   document.getElementById('emp-name').textContent = data.name;
   document.getElementById('emp-email').textContent = currentUser.email;
   document.getElementById('emp-affiliation').textContent = data.affiliation || 'Student employee';
-
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const todayIdx = getTodayDayIndex();
   const projectsBody = document.getElementById('projects-body');
   projectsBody.innerHTML = '';
-
   data.projects.forEach((proj, pi) => {
     const block = document.createElement('div');
     block.className = 'project-block';
@@ -634,14 +373,12 @@ function renderTimesheet(data) {
       </div>
       <div class="project-block-body">
         <div class="day-grid" id="day-grid-${pi}"></div>
-      </div>
-    `;
+      </div>`;
     projectsBody.appendChild(block);
-
     const grid = block.querySelector(`#day-grid-${pi}`);
     days.forEach((day, di) => {
       const col = document.createElement('div');
-      col.className = 'day-col' + (di === todayIdx ? '' : '');
+      col.className = 'day-col';
       const isToday = di === todayIdx;
       const val = (data.hours && data.hours[pi] && data.hours[pi][di] != null) ? data.hours[pi][di] : '';
       col.innerHTML = `
@@ -649,18 +386,14 @@ function renderTimesheet(data) {
         <input type="number" min="0" max="24" step="0.5"
           class="${isToday ? 'today-input' : ''}"
           data-project="${pi}" data-day="${di}"
-          value="${val}" placeholder="0">
-      `;
+          value="${val}" placeholder="0">`;
       grid.appendChild(col);
     });
-
-    // Total col
     const totalCol = document.createElement('div');
     totalCol.className = 'day-col total-col';
     totalCol.innerHTML = `<label>Total</label><input type="number" readonly id="row-total-${pi}" value="${calcRowTotal(data.hours, pi)}">`;
     grid.appendChild(totalCol);
   });
-
   renderTotals(data);
   attachInputListeners();
   document.getElementById('timesheet-content').style.display = 'block';
@@ -674,7 +407,6 @@ function calcRowTotal(hours, pi) {
 function renderTotals(data) {
   const list = document.getElementById('totals-list');
   list.innerHTML = '';
-
   let grand = 0;
   data.projects.forEach((proj, pi) => {
     const t = calcRowTotal(data.hours, pi);
@@ -684,7 +416,6 @@ function renderTotals(data) {
     row.innerHTML = `<span class="t-label">${escHtml(proj.name)}</span><span class="t-value" id="total-val-${pi}">${fmt(t)}</span>`;
     list.appendChild(row);
   });
-
   const grandRow = document.createElement('div');
   grandRow.className = 'totals-row grand-row';
   grandRow.innerHTML = `<span class="t-label">Total hours this week</span><span class="t-value" id="grand-total-val">${fmt(grand)}</span>`;
@@ -701,25 +432,17 @@ function onHoursChange(e) {
   const pi = parseInt(e.target.getAttribute('data-project'));
   const di = parseInt(e.target.getAttribute('data-day'));
   const val = parseFloat(e.target.value) || 0;
-
   if (!timesheetData.hours[pi]) timesheetData.hours[pi] = [0,0,0,0,0,0,0];
   timesheetData.hours[pi][di] = val;
-
-  // Update row total
   const rowTotal = calcRowTotal(timesheetData.hours, pi);
   const rowTotalEl = document.getElementById('row-total-' + pi);
   if (rowTotalEl) rowTotalEl.value = fmt(rowTotal);
-
-  // Update summary totals
   const totalValEl = document.getElementById('total-val-' + pi);
   if (totalValEl) totalValEl.textContent = fmt(rowTotal);
-
   let grand = 0;
   timesheetData.projects.forEach((_, i) => { grand += calcRowTotal(timesheetData.hours, i); });
   const grandEl = document.getElementById('grand-total-val');
   if (grandEl) grandEl.textContent = fmt(grand);
-
-  // Debounced auto-save
   clearTimeout(saveTimer);
   saveTimer = setTimeout(autoSave, 1200);
 }
@@ -741,20 +464,6 @@ function autoSave() {
   }).catch(() => {});
 }
 
-// ─────────────────────────────────────────────
-// API HELPER
-// ─────────────────────────────────────────────
-function callScript(action, params) {
-  const url = SCRIPT_URL + '?action=' + encodeURIComponent(action) +
-    '&' + Object.entries(params).map(([k,v]) => k + '=' + encodeURIComponent(
-      typeof v === 'object' ? JSON.stringify(v) : v
-    )).join('&');
-  return fetch(url).then(r => r.json());
-}
-
-// ─────────────────────────────────────────────
-// UTILS
-// ─────────────────────────────────────────────
 function fmt(n) {
   const num = parseFloat(n) || 0;
   return num % 1 === 0 ? num.toString() : num.toFixed(1);
@@ -767,27 +476,18 @@ function showLogin() {
   document.getElementById('app-screen').style.display = 'none';
 }
 
-// ─────────────────────────────────────────────
-// KEYBOARD: Enter on login
-// ─────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') {
     handleLogin();
   }
 });
 
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   if (checkMagicLink()) return;
   const token = sessionStorage.getItem('ceeo_token');
   const email = sessionStorage.getItem('ceeo_email');
-  if (token && email) {
-    loadApp(email, token);
-  } else {
-    showLogin();
-  }
+  if (token && email) { loadApp(email, token); }
+  else { showLogin(); }
 });
 </script>
 </body>
