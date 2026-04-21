@@ -40,11 +40,44 @@
   .site-header .sign-out-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.85); font-size: 12px; padding: 5px 12px; border-radius: var(--radius-sm); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
   .site-header .sign-out-btn:hover { background: rgba(255,255,255,0.2); }
   .page-wrap { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
-  .week-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .week-bar .week-label { font-size: 13px; color: var(--text-secondary); }
-  .week-bar .week-label strong { color: var(--text-primary); font-weight: 600; }
-  .saved-pill { font-size: 11px; font-family: 'DM Mono', monospace; background: #e6f4ea; color: #2d7a3a; padding: 3px 10px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; }
+
+  .week-banner {
+    background: var(--ceeo-navy);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 16px 22px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .week-banner .week-title { font-size: 13px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 4px; }
+  .week-banner .week-dates { font-size: 18px; font-weight: 600; color: #fff; }
+  .week-banner .week-dates span { color: var(--ceeo-yellow); }
+
+  .save-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .save-btn {
+    background: var(--ceeo-yellow);
+    color: var(--ceeo-navy);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .save-btn:hover { background: #e6b800; }
+  .save-btn:active { transform: scale(0.97); }
+  .save-btn:disabled { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); cursor: not-allowed; }
+  .saved-pill { font-size: 12px; font-family: 'DM Mono', monospace; background: rgba(255,255,255,0.15); color: #fff; padding: 4px 12px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
   .saved-pill.show { opacity: 1; }
+
   .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 16px; }
   .card-header { background: var(--ceeo-blue); color: #fff; padding: 11px 18px; font-size: 13px; font-weight: 600; letter-spacing: 0.2px; }
   .card-body { padding: 18px; }
@@ -105,6 +138,8 @@
     .day-grid { grid-template-columns: repeat(4, 1fr); }
     .page-wrap { padding: 16px 14px 50px; }
     .login-card { padding: 28px 22px; }
+    .week-banner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .week-banner .week-dates { font-size: 15px; }
   }
 </style>
 </head>
@@ -156,10 +191,18 @@
     </div>
     <div id="error-banner" class="error-banner"></div>
     <div id="timesheet-content" style="display:none">
-      <div class="week-bar">
-        <span class="week-label">Week of <strong id="week-range-label"></strong></span>
-        <span class="saved-pill" id="saved-pill">saved</span>
+
+      <div class="week-banner">
+        <div>
+          <div class="week-title">Current timesheet</div>
+          <div class="week-dates" id="week-dates-display">Loading...</div>
+        </div>
+        <div class="save-bar">
+          <span class="saved-pill" id="saved-pill">Saved</span>
+          <button class="save-btn" id="save-btn" onclick="manualSave()">Save</button>
+        </div>
       </div>
+
       <div class="card">
         <div class="card-header">Employee information</div>
         <div class="card-body">
@@ -180,6 +223,7 @@
           <div class="totals-list" id="totals-list"></div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -192,18 +236,13 @@ let timesheetData = null;
 let saveTimer = null;
 
 function getSundayOfWeek(d) {
-  var day = new Date(d);
-  day.setHours(0,0,0,0);
-  day.setDate(day.getDate() - day.getDay());
-  return day;
+  var day = new Date(d); day.setHours(0,0,0,0); day.setDate(day.getDate() - day.getDay()); return day;
 }
 function formatDate(d) {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
-function getWeekRange() {
-  const sun = getSundayOfWeek(new Date());
-  const sat = new Date(sun); sat.setDate(sat.getDate() + 6);
-  return { start: sun, end: sat };
+function formatDateShort(d) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 function getTodayDayIndex() { return new Date().getDay(); }
 
@@ -216,17 +255,12 @@ function callScript(action, params) {
         return kv[0] + '=' + encodeURIComponent(typeof kv[1] === 'object' ? JSON.stringify(kv[1]) : kv[1]);
       }).join('&');
     window[callbackName] = function(data) {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      resolve(data);
+      delete window[callbackName]; document.body.removeChild(script); resolve(data);
     };
     script.onerror = function() {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      reject(new Error('Network error'));
+      delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error'));
     };
-    script.src = url;
-    document.body.appendChild(script);
+    script.src = url; document.body.appendChild(script);
   });
 }
 
@@ -236,13 +270,10 @@ function handleLogin() {
   const errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
   if (!email || !email.includes('@')) {
-    errEl.textContent = 'Please enter a valid email address.';
-    errEl.style.display = 'block';
-    return;
+    errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return;
   }
   const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.textContent = 'Signing in...';
+  btn.disabled = true; btn.textContent = 'Signing in...';
   if (password) {
     callScript('login', { email, password })
       .then(res => {
@@ -252,16 +283,12 @@ function handleLogin() {
           loadApp(email, res.token);
         } else {
           errEl.textContent = res.error || 'Invalid email or password.';
-          errEl.style.display = 'block';
-          btn.disabled = false;
-          btn.textContent = 'Continue';
+          errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Continue';
         }
       })
       .catch(() => {
         errEl.textContent = 'Could not reach the server. Please try again.';
-        errEl.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Continue';
+        errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Continue';
       });
   } else {
     callScript('sendMagicLink', { email })
@@ -272,25 +299,19 @@ function handleLogin() {
           document.getElementById('sent-to-email').textContent = email;
         } else {
           errEl.textContent = res.error || 'That email is not registered. Please contact your administrator.';
-          errEl.style.display = 'block';
-          btn.disabled = false;
-          btn.textContent = 'Continue';
+          errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Continue';
         }
       })
       .catch(() => {
         errEl.textContent = 'Could not reach the server. Please try again.';
-        errEl.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Continue';
+        errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Continue';
       });
   }
 }
 
 function signOut() {
-  sessionStorage.removeItem('ceeo_token');
-  sessionStorage.removeItem('ceeo_email');
-  currentUser = null;
-  timesheetData = null;
+  sessionStorage.removeItem('ceeo_token'); sessionStorage.removeItem('ceeo_email');
+  currentUser = null; timesheetData = null;
   document.getElementById('app-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('login-btn').disabled = false;
@@ -304,8 +325,7 @@ function signOut() {
 
 function checkMagicLink() {
   const params = new URLSearchParams(window.location.search);
-  const token = params.get('token');
-  const email = params.get('email');
+  const token = params.get('token'); const email = params.get('email');
   if (token && email) {
     callScript('validateMagicLink', { token, email })
       .then(res => {
@@ -315,8 +335,7 @@ function checkMagicLink() {
           window.history.replaceState({}, '', window.location.pathname);
           loadApp(email, res.token);
         } else { showLogin(); }
-      })
-      .catch(() => showLogin());
+      }).catch(() => showLogin());
     return true;
   }
   return false;
@@ -347,22 +366,25 @@ function loadApp(email, token) {
 }
 
 function showError(msg) {
-  const el = document.getElementById('error-banner');
-  el.textContent = msg;
-  el.style.display = 'block';
+  const el = document.getElementById('error-banner'); el.textContent = msg; el.style.display = 'block';
 }
 
 function renderTimesheet(data) {
-  const { start, end } = getWeekRange();
-  document.getElementById('week-range-label').textContent = formatDate(start) + ' – ' + formatDate(end);
+  const sun = getSundayOfWeek(new Date());
+  const sat = new Date(sun); sat.setDate(sat.getDate() + 6);
+  document.getElementById('week-dates-display').innerHTML =
+    'Week of <span>' + formatDateShort(sun) + '</span> – <span>' + formatDate(sat) + '</span>';
+
   document.getElementById('header-user-name').textContent = data.name;
   document.getElementById('emp-name').textContent = data.name;
   document.getElementById('emp-email').textContent = currentUser.email;
   document.getElementById('emp-affiliation').textContent = data.affiliation || 'Student employee';
+
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const todayIdx = getTodayDayIndex();
   const projectsBody = document.getElementById('projects-body');
   projectsBody.innerHTML = '';
+
   data.projects.forEach((proj, pi) => {
     const block = document.createElement('div');
     block.className = 'project-block';
@@ -394,6 +416,7 @@ function renderTimesheet(data) {
     totalCol.innerHTML = `<label>Total</label><input type="number" readonly id="row-total-${pi}" value="${calcRowTotal(data.hours, pi)}">`;
     grid.appendChild(totalCol);
   });
+
   renderTotals(data);
   attachInputListeners();
   document.getElementById('timesheet-content').style.display = 'block';
@@ -409,8 +432,7 @@ function renderTotals(data) {
   list.innerHTML = '';
   let grand = 0;
   data.projects.forEach((proj, pi) => {
-    const t = calcRowTotal(data.hours, pi);
-    grand += t;
+    const t = calcRowTotal(data.hours, pi); grand += t;
     const row = document.createElement('div');
     row.className = 'totals-row';
     row.innerHTML = `<span class="t-label">${escHtml(proj.name)}</span><span class="t-value" id="total-val-${pi}">${fmt(t)}</span>`;
@@ -450,18 +472,38 @@ function onHoursChange(e) {
 function autoSave() {
   if (!currentUser) return;
   callScript('saveHours', {
-    email: currentUser.email,
-    token: currentUser.token,
+    email: currentUser.email, token: currentUser.token,
     hours: timesheetData.hours,
     weekStart: getSundayOfWeek(new Date()).toISOString().split('T')[0]
   }).then(res => {
-    if (res.success) {
-      const pill = document.getElementById('saved-pill');
-      pill.classList.add('show');
-      clearTimeout(window._savedTimer);
-      window._savedTimer = setTimeout(() => pill.classList.remove('show'), 2500);
-    }
+    if (res.success) showSavedConfirmation();
   }).catch(() => {});
+}
+
+function manualSave() {
+  if (!currentUser) return;
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  clearTimeout(saveTimer);
+  callScript('saveHours', {
+    email: currentUser.email, token: currentUser.token,
+    hours: timesheetData.hours,
+    weekStart: getSundayOfWeek(new Date()).toISOString().split('T')[0]
+  }).then(res => {
+    btn.disabled = false; btn.textContent = 'Save';
+    if (res.success) showSavedConfirmation();
+    else showError('Could not save. Please try again.');
+  }).catch(() => {
+    btn.disabled = false; btn.textContent = 'Save';
+    showError('Could not reach the server. Please try again.');
+  });
+}
+
+function showSavedConfirmation() {
+  const pill = document.getElementById('saved-pill');
+  pill.classList.add('show');
+  clearTimeout(window._savedTimer);
+  window._savedTimer = setTimeout(() => pill.classList.remove('show'), 3000);
 }
 
 function fmt(n) {
@@ -477,17 +519,14 @@ function showLogin() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') {
-    handleLogin();
-  }
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') handleLogin();
 });
 
 window.addEventListener('DOMContentLoaded', () => {
   if (checkMagicLink()) return;
   const token = sessionStorage.getItem('ceeo_token');
   const email = sessionStorage.getItem('ceeo_email');
-  if (token && email) { loadApp(email, token); }
-  else { showLogin(); }
+  if (token && email) { loadApp(email, token); } else { showLogin(); }
 });
 </script>
 </body>
